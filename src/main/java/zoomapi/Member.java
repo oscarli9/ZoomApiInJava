@@ -1,6 +1,8 @@
 package zoomapi;
 
 public class Member {
+    private String channelId;
+    private String channelName;
     private String id;
     private String email;
     private String name;
@@ -10,8 +12,27 @@ public class Member {
         this.email = email;
     }
 
-    public void setId(String id) {
+    public Member setChannelId(String channelId) {
+        this.channelId = channelId;
+        return this;
+    }
+
+    public String getChannelId() {
+        return channelId;
+    }
+
+    public Member setChannelName(String channelName) {
+        this.channelName = channelName;
+        return this;
+    }
+
+    public String getChannelName() {
+        return channelName;
+    }
+
+    public Member setId(String id) {
         this.id = id;
+        return this;
     }
 
     public String getId() {
@@ -22,16 +43,18 @@ public class Member {
         return email;
     }
 
-    public void setName(String name) {
+    public Member setName(String name) {
         this.name = name;
+        return this;
     }
 
     public String getName() {
         return name;
     }
 
-    public void setRole(String role) {
+    public Member setRole(String role) {
         this.role = role;
+        return this;
     }
 
     public String getRole() {

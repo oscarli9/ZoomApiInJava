@@ -91,9 +91,7 @@ public class MyOAuthBot {
         else System.out.println(result.getErrorMessage());
 
         // test for ChatMessages.update
-        result = chatMessages.update("2d794d5d-f82c-43ee-8bbd-21afde2eb569", "7f7aeeed526f4c05b49ba4a84d41b954", true, "Yo");
-        if (result.isSuccessful()) System.out.println(result.getResult());
-        else System.out.println(result.getErrorMessage());
+        chatMessages.update("2d794d5d-f82c-43ee-8bbd-21afde2eb569", "7f7aeeed526f4c05b49ba4a84d41b954", true, "Yo");
 
         // test for ChatMessages.delete
         chatMessages.delete("99D5BB81-8F89-45CC-A6C9-ED24F16D99FC","7f7aeeed526f4c05b49ba4a84d41b954", true);
@@ -224,7 +222,9 @@ public class MyOAuthBot {
         INewMemberHandler newMemberHandler = (Member member) -> {
             System.out.println("******************************");
             System.out.println("New member: ");
-            System.out.print("Id: " + member.getId() + " ");
+            System.out.print("Channel ID: " + member.getChannelId() + " ");
+            System.out.print("Channel Name: " + member.getChannelName() + " ");
+            System.out.print("ID: " + member.getId() + " ");
             System.out.print("Email: " + member.getEmail() + " ");
             System.out.print("Name: " + member.getName() + " ");
             System.out.println("Role: " + member.getRole());

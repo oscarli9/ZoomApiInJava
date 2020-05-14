@@ -118,6 +118,7 @@ public class Downloader extends Thread {
                 for (int i=0; i<jsonArray.size(); i++) {
                     JsonElement jsonElement = jsonArray.get(i);
                     channelId = jsonElement.getAsJsonObject().get("id").getAsString();
+                    String channelName = jsonElement.getAsJsonObject().get("name").getAsString();
                     Result memberResult = chatChannels.listChannelMembers(channelId);
 
                     if (result.isSuccessful()) {
@@ -130,10 +131,12 @@ public class Downloader extends Thread {
                             String email = tempObj.get("email").getAsString();
                             String name = tempObj.get("name").getAsString();
                             String role = tempObj.get("role").getAsString();
-                            Member member = new Member(email);
-                            member.setId(id);
-                            member.setName(name);
-                            member.setRole(role);
+                            Member member = new Member(email)
+                                    .setChannelId(channelId)
+                                    .setChannelName(channelName)
+                                    .setId(id)
+                                    .setName(name)
+                                    .setRole(role);
                             members.add(member);
                         }
                         channelMembers.put(channelId, members);
@@ -193,6 +196,7 @@ public class Downloader extends Thread {
                     for (int i=0; i<jsonArray.size(); i++) {
                         JsonElement jsonElement = jsonArray.get(i);
                         channelId = jsonElement.getAsJsonObject().get("id").getAsString();
+                        String channelName = jsonElement.getAsJsonObject().get("name").getAsString();
                         Result memberResult = chatChannels.listChannelMembers(channelId);
                         if (result.isSuccessful()) {
                             JsonObject memberJsonObject = (JsonObject) memberResult.getResult();
@@ -212,10 +216,12 @@ public class Downloader extends Thread {
                                     }
                                 }
                                 if (isNew) {
-                                    Member member = new Member(email);
-                                    member.setId(id);
-                                    member.setName(name);
-                                    member.setRole(role);
+                                    Member member = new Member(email)
+                                            .setChannelId(channelId)
+                                            .setChannelName(channelName)
+                                            .setId(id)
+                                            .setName(name)
+                                            .setRole(role);
                                     newMembers.add(member);
                                 }
                             }
