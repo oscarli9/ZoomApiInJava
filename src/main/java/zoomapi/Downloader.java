@@ -15,18 +15,18 @@ import java.util.*;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
+import static zoomapi.Downloader.ApiEvent.*;
+
 @SuppressWarnings("unchecked")
 public class Downloader extends Thread {
-    public static final String NEW_MESSAGE_EVENT = "1";
-    public static final String UPDATED_MESSAGE_EVENT = "2";
-    public static final String NEW_MEMBER_EVENT = "3";
-    public static HashMap<String, String> eventDic = new HashMap<>() {
-        {
-            put(NEW_MESSAGE_EVENT, "1");
-            put(UPDATED_MESSAGE_EVENT, "2");
-            put(NEW_MEMBER_EVENT, "3");
-        }
-    };
+    public enum ApiEvent {
+        NEW_MESSAGE_EVENT,
+        UPDATED_MESSAGE_EVENT,
+        NEW_MEMBER_EVENT
+    }
+    public static ArrayList<ApiEvent> eventDic = new ArrayList<>(
+            Arrays.asList(NEW_MESSAGE_EVENT, UPDATED_MESSAGE_EVENT, NEW_MEMBER_EVENT)
+    );
 
     private BlockingQueue<TaskObject> queue;
     private Chat chat;
@@ -38,18 +38,18 @@ public class Downloader extends Thread {
         chat = oAuthClient.getChat();
     }
 
-    public boolean addEvent(String eventType, String identity, IEventHandler h) {
+    public boolean addEvent(ApiEvent eventType, String identity, IEventHandler h) {
         if (eventType == null || h == null) {
             System.err.println("Not all required parameters have been set.");
             return false;
         } else if (identity == null && (eventType.equals(NEW_MESSAGE_EVENT) || eventType.equals(UPDATED_MESSAGE_EVENT))) {
             System.err.println("Not all required parameters have been set.");
             return false;
-        } else if (!eventDic.containsKey(eventType)) {
+        } else if (!eventDic.contains(eventType)) {
             System.err.println("Invalid event type.");
             return false;
         }
-        if (eventDic.containsKey(eventType)) {
+        if (eventDic.contains(eventType)) {
             try {
                 TaskObject taskObject = new TaskObject(eventType, identity, h);
                 queue.put(taskObject);
@@ -61,11 +61,11 @@ public class Downloader extends Thread {
         return true;
     }
 
-    public boolean removeEvent(String eventType, String identity) {
+    public boolean removeEvent(ApiEvent eventType, String identity) {
         if (eventType == null) {
             System.err.println("Not all required parameters have been set.");
             return false;
-        } else if (!eventDic.containsKey(eventType)) {
+        } else if (!eventDic.contains(eventType)) {
             System.err.println("Invalid event type.");
             return false;
         }
@@ -99,7 +99,7 @@ public class Downloader extends Thread {
         String dateString = sdf.format(date);
 
         for (TaskObject taskObject : queue) {
-            String eventType = taskObject.getEventType();
+            ApiEvent eventType = taskObject.getEventType();
             String identity = taskObject.getIdentity();
             String channelId = getChannelId(identity);
             if (eventType.equals(NEW_MESSAGE_EVENT) || eventType.equals(UPDATED_MESSAGE_EVENT)) {
@@ -152,7 +152,7 @@ public class Downloader extends Thread {
                 dateString = sdf.format(date);
                 TaskObject curObj = queue.poll();
                 assert curObj != null;
-                String eventType = curObj.getEventType();
+                ApiEvent eventType = curObj.getEventType();
                 String identity = curObj.getIdentity();
                 String channelId = getChannelId(identity);
                 List<Message> newMessages = new ArrayList<>();

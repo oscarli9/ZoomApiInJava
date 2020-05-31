@@ -1,25 +1,24 @@
 package zoomapi;
 
+import zoomapi.Downloader.ApiEvent;
 import zoomapi.handlers.IEventHandler;
 
-import javax.annotation.Nonnull;
-
 public class TaskObject {
-    private String eventType;
+    private ApiEvent eventType;
     private String identity;
     private IEventHandler eventHandler;
 
-    public TaskObject(String eventType, String identity, IEventHandler eventHandler) {
+    public TaskObject(ApiEvent eventType, String identity, IEventHandler eventHandler) {
         this.eventType = eventType;
         this.identity = identity;
         this.eventHandler = eventHandler;
     }
 
-    public void setEventType(String eventType) {
+    public void setEventType(ApiEvent eventType) {
         this.eventType = eventType;
     }
 
-    public String getEventType() {
+    public ApiEvent getEventType() {
         return eventType;
     }
 

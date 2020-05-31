@@ -42,5 +42,6 @@
     <orderEntry type="library" name="Maven: com.google.oauth-client:google-oauth-client-java6:1.30.6" level="project" />
     <orderEntry type="library" name="Maven: com.google.code.gson:gson:2.8.5" level="project" />
     <orderEntry type="library" name="Maven: com.google.guava:guava:21.0" level="project" />
+    <orderEntry type="library" name="Maven: org.xerial:sqlite-jdbc:3.31.1" level="project" />
   </component>
 </module>

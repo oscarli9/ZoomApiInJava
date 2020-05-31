@@ -3,6 +3,7 @@ package zoomapi;
 import zoomapi.handlers.INewMemberHandler;
 import zoomapi.handlers.INewMessageHandler;
 import zoomapi.handlers.IUpdateMessageHandler;
+import zoomapi.Downloader.ApiEvent;
 
 /**
  * Zoom.us REST API Java Client
@@ -36,17 +37,17 @@ public class OAuthClient extends Client.ZoomClient {
                 ));
     }
 
-    public void newMessageEvent(String channelName, String eventType, INewMessageHandler h) {
+    public void newMessageEvent(String channelName, ApiEvent eventType, INewMessageHandler h) {
         if (downloader == null) downloader = new Downloader(this);
         downloader.addEvent(eventType, channelName, h);
     }
 
-    public void updatedMessageEvent(String channelName, String eventType, IUpdateMessageHandler h) {
+    public void updatedMessageEvent(String channelName, ApiEvent eventType, IUpdateMessageHandler h) {
         if (downloader == null) downloader = new Downloader(this);
         downloader.addEvent(eventType, channelName, h);
     }
 
-    public void newMemberEvent(String eventType, INewMemberHandler h) {
+    public void newMemberEvent(ApiEvent eventType, INewMemberHandler h) {
         if (downloader == null) downloader = new Downloader(this);
         downloader.addEvent(eventType, null, h);
     }

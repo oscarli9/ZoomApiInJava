@@ -13,6 +13,8 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.List;
 
+import zoomapi.Downloader.ApiEvent;
+
 @SuppressWarnings("unchecked")
 public class MyOAuthBot {
     private static String clientId;
@@ -38,7 +40,7 @@ public class MyOAuthBot {
         ChatMessages chatMessages = oAuthClient.getChatMessages();
         Chat chat = oAuthClient.getChat();
         Result result = null;
-
+/*
         // test for ChatChannels.list
         result = oAuthClient.getChatChannels().list();
         if (result.isSuccessful()) System.out.println(result.getResult());
@@ -95,7 +97,7 @@ public class MyOAuthBot {
 
         // test for ChatMessages.delete
         chatMessages.delete("99D5BB81-8F89-45CC-A6C9-ED24F16D99FC","7f7aeeed526f4c05b49ba4a84d41b954", true);
-
+*/
         // test for ChatChannels.join
         //chatChannels.join("7f7aeeed526f4c05b49ba4a84d41b954");
         //if (result.isSuccessful()) System.out.println(result.getResult());
@@ -231,9 +233,9 @@ public class MyOAuthBot {
             System.out.println("******************************");
             return null;
         };
-        oAuthClient.newMessageEvent("hahaha", Downloader.NEW_MESSAGE_EVENT, newMessageHandler);
-        oAuthClient.updatedMessageEvent("hahaha", Downloader.UPDATED_MESSAGE_EVENT, updateMessageHandler);
-        oAuthClient.newMemberEvent(Downloader.NEW_MEMBER_EVENT, newMemberHandler);
+        oAuthClient.newMessageEvent("hahaha", ApiEvent.NEW_MESSAGE_EVENT, newMessageHandler);
+        oAuthClient.updatedMessageEvent("hahaha", ApiEvent.UPDATED_MESSAGE_EVENT, updateMessageHandler);
+        oAuthClient.newMemberEvent(ApiEvent.NEW_MEMBER_EVENT, newMemberHandler);
         oAuthClient.runDownloader();
     }
 }
