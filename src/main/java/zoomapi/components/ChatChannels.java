@@ -1,9 +1,8 @@
 package zoomapi.components;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import zoomapi.Result;
+import zoomapi.models.Result;
 import zoomapi.Util;
 
 import java.util.ArrayList;

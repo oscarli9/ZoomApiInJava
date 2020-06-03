@@ -4,7 +4,7 @@ import org.ini4j.Ini;
 import org.junit.Before;
 import org.junit.Test;
 import zoomapi.OAuthClient;
-import zoomapi.Result;
+import zoomapi.models.Result;
 
 import java.io.FileReader;
 import java.io.IOException;

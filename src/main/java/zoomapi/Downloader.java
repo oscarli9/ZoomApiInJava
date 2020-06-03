@@ -9,6 +9,10 @@ import zoomapi.handlers.IEventHandler;
 import zoomapi.handlers.INewMemberHandler;
 import zoomapi.handlers.INewMessageHandler;
 import zoomapi.handlers.IUpdateMessageHandler;
+import zoomapi.models.Member;
+import zoomapi.models.Message;
+import zoomapi.models.Result;
+import zoomapi.models.TaskObject;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -131,12 +135,12 @@ public class Downloader extends Thread {
                             String email = tempObj.get("email").getAsString();
                             String name = tempObj.get("name").getAsString();
                             String role = tempObj.get("role").getAsString();
-                            Member member = new Member(email)
-                                    .setChannelId(channelId)
-                                    .setChannelName(channelName)
-                                    .setId(id)
-                                    .setName(name)
-                                    .setRole(role);
+                            Member member = new Member(email);
+                            member.setChannelId(channelId);
+                            member.setChannelName(channelName);
+                            member.setMemberId(id);
+                            member.setName(name);
+                            member.setRole(role);
                             members.add(member);
                         }
                         channelMembers.put(channelId, members);
@@ -216,12 +220,12 @@ public class Downloader extends Thread {
                                     }
                                 }
                                 if (isNew) {
-                                    Member member = new Member(email)
-                                            .setChannelId(channelId)
-                                            .setChannelName(channelName)
-                                            .setId(id)
-                                            .setName(name)
-                                            .setRole(role);
+                                    Member member = new Member(email);
+                                    member.setChannelId(channelId);
+                                    member.setChannelName(channelName);
+                                    member.setMemberId(id);
+                                    member.setName(name);
+                                    member.setRole(role);
                                     newMembers.add(member);
                                 }
                             }

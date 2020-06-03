@@ -3,8 +3,8 @@ package zoomapi.components;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import zoomapi.Message;
-import zoomapi.Result;
+import zoomapi.models.Message;
+import zoomapi.models.Result;
 import zoomapi.handlers.ISearchHandler;
 
 import java.text.ParseException;
@@ -57,11 +57,11 @@ public class Chat extends BaseComponent {
                         jsonObject = jsonArray.get(j).getAsJsonObject();
                         if (jsonObject.get("sender").getAsString().contains(condition)) {
                             String messageContent = jsonObject.get("message").getAsString();
-                            String sender = jsonObject.get("sender").getAsString();
+                            //String sender = jsonObject.get("sender").getAsString();
                             String dateTime = jsonObject.get("date_time").getAsString();
                             String messageId = jsonObject.get("id").getAsString();
                             Message newMessage = new Message(channelId, true, messageContent);
-                            newMessage.setSender(sender);
+                            //newMessage.setSender(sender);
                             newMessage.setDateTime(dateTime);
                             newMessage.setMessageId(messageId);
                             messageList.add(newMessage);
@@ -106,11 +106,11 @@ public class Chat extends BaseComponent {
                         jsonObject = jsonArray.get(j).getAsJsonObject();
                         if (jsonObject.get("message").getAsString().contains(condition)) {
                             String messageContent = jsonObject.get("message").getAsString();
-                            String sender = jsonObject.get("sender").getAsString();
+                            //String sender = jsonObject.get("sender").getAsString();
                             String dateTime = jsonObject.get("date_time").getAsString();
                             String messageId = jsonObject.get("id").getAsString();
                             Message newMessage = new Message(channelId, true, messageContent);
-                            newMessage.setSender(sender);
+                            //newMessage.setSender(sender);
                             newMessage.setDateTime(dateTime);
                             newMessage.setMessageId(messageId);
                             messageList.add(newMessage);

@@ -5,15 +5,17 @@ import zoomapi.*;
 import zoomapi.components.Chat;
 import zoomapi.components.ChatChannels;
 import zoomapi.components.ChatMessages;
-import zoomapi.handlers.INewMemberHandler;
-import zoomapi.handlers.INewMessageHandler;
-import zoomapi.handlers.IUpdateMessageHandler;
+import zoomapi.handlers.*;
 
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.List;
 
 import zoomapi.Downloader.ApiEvent;
+import zoomapi.models.Channel;
+import zoomapi.models.Member;
+import zoomapi.models.Message;
+import zoomapi.models.Result;
 
 @SuppressWarnings("unchecked")
 public class MyOAuthBot {
@@ -97,7 +99,7 @@ public class MyOAuthBot {
 
         // test for ChatMessages.delete
         chatMessages.delete("99D5BB81-8F89-45CC-A6C9-ED24F16D99FC","7f7aeeed526f4c05b49ba4a84d41b954", true);
-*/
+
         // test for ChatChannels.join
         //chatChannels.join("7f7aeeed526f4c05b49ba4a84d41b954");
         //if (result.isSuccessful()) System.out.println(result.getResult());
@@ -127,7 +129,7 @@ public class MyOAuthBot {
             for (Message message : messageList) {
                 System.out.print("Message ID: " + message.getMessageId() + " ");
                 System.out.print("Time: " + message.getDateTime() + " ");
-                System.out.print("Sender: " + message.getSender() + " ");
+                //System.out.print("Sender: " + message.getSender() + " ");
                 System.out.println("Message: " + message.getMessage());
             }
             System.out.println("******************************");
@@ -143,7 +145,7 @@ public class MyOAuthBot {
             for (Message message : messageList) {
                 System.out.print("Message ID: " + message.getMessageId() + " ");
                 System.out.print("Time: " + message.getDateTime() + " ");
-                System.out.print("Sender: " + message.getSender() + " ");
+                //System.out.print("Sender: " + message.getSender() + " ");
                 System.out.println("Message: " + message.getMessage());
             }
             System.out.println("******************************");
@@ -162,7 +164,7 @@ public class MyOAuthBot {
             for (Message message : messageList) {
                 System.out.print("Message ID: " + message.getMessageId() + " ");
                 System.out.print("Time: " + message.getDateTime() + " ");
-                System.out.print("Sender: " + message.getSender() + " ");
+                //System.out.print("Sender: " + message.getSender() + " ");
                 System.out.println("Message: " + message.getMessage());
             }
             System.out.println("******************************");
@@ -179,7 +181,7 @@ public class MyOAuthBot {
             for (Message message : messageList) {
                 System.out.print("Message ID: " + message.getMessageId() + " ");
                 System.out.print("Time: " + message.getDateTime() + " ");
-                System.out.print("Sender: " + message.getSender() + " ");
+                //System.out.print("Sender: " + message.getSender() + " ");
                 System.out.println("Message: " + message.getMessage());
             }
             System.out.println("******************************");
@@ -195,7 +197,7 @@ public class MyOAuthBot {
             for (Message message : messageList) {
                 System.out.print("Message ID: " + message.getMessageId() + " ");
                 System.out.print("Time: " + message.getDateTime() + " ");
-                System.out.print("Sender: " + message.getSender() + " ");
+                //System.out.print("Sender: " + message.getSender() + " ");
                 System.out.println("Message: " + message.getMessage());
             }
             System.out.println("******************************");
@@ -226,7 +228,7 @@ public class MyOAuthBot {
             System.out.println("New member: ");
             System.out.print("Channel ID: " + member.getChannelId() + " ");
             System.out.print("Channel Name: " + member.getChannelName() + " ");
-            System.out.print("ID: " + member.getId() + " ");
+            System.out.print("Member ID: " + member.getMemberId() + " ");
             System.out.print("Email: " + member.getEmail() + " ");
             System.out.print("Name: " + member.getName() + " ");
             System.out.println("Role: " + member.getRole());
@@ -236,6 +238,49 @@ public class MyOAuthBot {
         oAuthClient.newMessageEvent("hahaha", ApiEvent.NEW_MESSAGE_EVENT, newMessageHandler);
         oAuthClient.updatedMessageEvent("hahaha", ApiEvent.UPDATED_MESSAGE_EVENT, updateMessageHandler);
         oAuthClient.newMemberEvent(ApiEvent.NEW_MEMBER_EVENT, newMemberHandler);
-        oAuthClient.runDownloader();
+        oAuthClient.runDownloader();*/
+
+        // create tables
+        //CredentialHandler credentialHandler = new CredentialHandler();
+        //credentialHandler.createTable();
+        ChannelHandler channelHandler = new ChannelHandler(oAuthClient);
+        //channelHandler.createTable();
+        MembershipHandler membershipHandler = new MembershipHandler(oAuthClient);
+        //membershipHandler.createTable();
+        MessageHandler messageHandler = new MessageHandler(oAuthClient);
+        messageHandler.createTable();
+
+        List<Channel> channels = channelHandler.getChannels(clientId);
+        for (Channel channel : channels) {
+            System.out.println("******************************");
+            System.out.println("Channel ID: " + channel.getChannelId());
+            System.out.println("Channel Name: " + channel.getChannelName());
+            System.out.println("Channel Type: " + channel.getType());
+            System.out.println("******************************");
+        }
+
+        List<Member> members = membershipHandler.getMembers("7f7aeeed526f4c05b49ba4a84d41b954");
+        for (Member member : members) {
+            System.out.println("******************************");
+            System.out.println("Channel ID: " + member.getChannelId());
+            System.out.println("Member ID: " + member.getMemberId());
+            System.out.println("Email: " + member.getEmail());
+            System.out.println("Name: " + member.getName());
+            System.out.println("Role: " + member.getRole());
+            System.out.println("******************************");
+        }
+
+        List<Message> messages = messageHandler.getMessages("me", "7f7aeeed526f4c05b49ba4a84d41b954");
+        for (Message message : messages) {
+            System.out.println("******************************");
+            System.out.println("Message ID: " + message.getMessageId());
+            System.out.println("Time: " + message.getDateTime());
+            System.out.println("Sender ID: " + message.getSender());
+            System.out.println("Receiver ID: " + message.getReceiver());
+            if (message.isReceiverIsChannel()) System.out.println("The receiver is a channel.");
+            else System.out.println("The receiver is a user.");
+            System.out.println("Message: " + message.getMessage());
+            System.out.println("******************************");
+        }
     }
 }

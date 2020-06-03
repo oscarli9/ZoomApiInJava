@@ -1,7 +1,7 @@
 package zoomapi.handlers;
 
-import zoomapi.Message;
-import zoomapi.Result;
+import zoomapi.models.Message;
+import zoomapi.models.Result;
 
 public interface IUpdateMessageHandler extends IEventHandler {
     Result handle(Message message);

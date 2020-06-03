@@ -1,7 +1,7 @@
 package zoomapi.handlers;
 
-import zoomapi.Member;
-import zoomapi.Result;
+import zoomapi.models.Member;
+import zoomapi.models.Result;
 
 public interface INewMemberHandler extends IEventHandler {
     Result handle(Member member);

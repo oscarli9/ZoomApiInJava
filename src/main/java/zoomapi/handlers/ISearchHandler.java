@@ -1,6 +1,6 @@
 package zoomapi.handlers;
 
-import zoomapi.Result;
+import zoomapi.models.Result;
 import zoomapi.components.ChatMessages;
 
 public interface ISearchHandler {

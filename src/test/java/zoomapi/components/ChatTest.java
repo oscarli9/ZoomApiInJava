@@ -3,9 +3,9 @@ package zoomapi.components;
 import org.ini4j.Ini;
 import org.junit.Before;
 import org.junit.Test;
-import zoomapi.Message;
+import zoomapi.models.Message;
 import zoomapi.OAuthClient;
-import zoomapi.Result;
+import zoomapi.models.Result;
 
 import java.io.FileReader;
 import java.io.IOException;
@@ -43,7 +43,13 @@ public class ChatTest {
     public void historyTest() {
         Chat chat = oAuthClient.getChat();
         chat.history("hahaha", "2020-04-21", "2020-04-27");
-        chat.history("hahaha", "2020-04-23", "2020-04-28");
+        List<Message> messageList = (List<Message>) chat.history("hahaha", "2020-05-28", "2020-05-31").getResult();
+        for (Message message : messageList) {
+            System.out.println(message.getMessageId());
+            System.out.println(message.getDateTime());
+            System.out.println(message.getSender());
+            System.out.println(message.getMessage());
+        }
     }
 
     @Test

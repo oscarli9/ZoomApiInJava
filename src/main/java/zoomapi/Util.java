@@ -10,6 +10,7 @@ import com.google.api.client.http.GenericUrl;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.jackson2.JacksonFactory;
 import okhttp3.*;
+import zoomapi.handlers.CredentialHandler;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -22,7 +23,7 @@ public class Util {
     public static class ApiClient {
         private String baseUrl;
         private int timeout;
-        HashMap<String, String> config;
+        public HashMap<String, String> config;
 
         /**
          * Setup a new API Client
@@ -278,24 +279,35 @@ public class Util {
         String authorizationUrl = "https://zoom.us/oauth/authorize";
         String tokenUrl = "https://zoom.us/oauth/token";
 
-        AuthorizationCodeFlow flow = new AuthorizationCodeFlow.Builder(BearerToken
-                .authorizationHeaderAccessMethod(),
-                new NetHttpTransport(),
-                new JacksonFactory(),
-                new GenericUrl(tokenUrl),
-                new ClientParametersAuthentication(cid, cSecret),
-                cid,
-                authorizationUrl).setScopes(Arrays.asList("read")).build();
-        LocalServerReceiver receiver = new LocalServerReceiver.Builder().setHost(
-                "localhost").setPort(Integer.parseInt(port)).build();
-        try {
-            Credential credential = flow.loadCredential("user");
-            if (credential == null) {
-                credential = new AuthorizationCodeInstalledApp(flow, receiver).authorize("user");
+        CredentialHandler credentialHandler = new CredentialHandler();
+        accessToken = credentialHandler.getOauthToken(cid);
+
+        if (accessToken == null) {
+            AuthorizationCodeFlow flow = new AuthorizationCodeFlow.Builder(BearerToken
+                    .authorizationHeaderAccessMethod(),
+                    new NetHttpTransport(),
+                    new JacksonFactory(),
+                    new GenericUrl(tokenUrl),
+                    new ClientParametersAuthentication(cid, cSecret),
+                    cid,
+                    authorizationUrl).setScopes(Arrays.asList("read")).build();
+            LocalServerReceiver receiver = new LocalServerReceiver.Builder().setHost(
+                    "localhost").setPort(Integer.parseInt(port)).build();
+            try {
+                Credential credential = flow.loadCredential("user");
+                if (credential == null) {
+                    credential = new AuthorizationCodeInstalledApp(flow, receiver).authorize("user");
+                }
+                accessToken = credential.getAccessToken();
+
+                HashMap<String, String> credentialMap = new HashMap<>();
+                credentialMap.put("clientId", cid);
+                credentialMap.put("oauthToken", accessToken);
+                credentialMap.put("timeStamp", String.valueOf(System.currentTimeMillis()));
+                credentialHandler.insert(credentialMap);
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-            accessToken = credential.getAccessToken();
-        } catch (IOException e) {
-            e.printStackTrace();
         }
 
         return accessToken;

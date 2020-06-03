@@ -1,4 +1,4 @@
-package zoomapi;
+package zoomapi.models;
 
 public class Result {
     public static String PARSE_ERROR = "Parse error: ";

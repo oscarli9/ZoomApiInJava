@@ -1,4 +1,4 @@
-package zoomapi;
+package zoomapi.models;
 
 import zoomapi.Downloader.ApiEvent;
 import zoomapi.handlers.IEventHandler;
