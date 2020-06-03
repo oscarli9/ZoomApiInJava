@@ -1,0 +1,6 @@
+target/
+!**/src/main/**
+!**/src/test/**
+
+zoom_cache.db
+src/main/java/bots/bot.ini
